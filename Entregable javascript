@@ -1,10 +1,9 @@
 let estudiantes = [];
 
 function iniciarSistema() {
-    let opcion; // Declaramos la variable vacía
+    let opcion; 
 
     do {
-        // Pedimos la opción y la guardamos (¡sin let!)
         opcion = prompt("Elige una opción del 1 al 6:\n1. Agregar estudiante\n2. Mostrar estudiantes\n3. Calcular promedio\n4. Buscar letra repetida\n5. Suma recursiva\n6. Salir");
 
         switch (opcion) {
@@ -35,12 +34,11 @@ function iniciarSistema() {
                 let idBusqueda = prompt("Ingrese el ID del estudiante para buscar letras repetidas:");
                 let encontrado = false;
 
-                // Buscamos al estudiante en la lista
                 for (let i = 0; i < estudiantes.length; i++) {
                     if (estudiantes[i].id === parseInt(idBusqueda)) {
                         buscarLetrasRepetidas(estudiantes[i].nombre);
                         encontrado = true;
-                        break; // Ya lo encontramos, salimos del bucle de búsqueda
+                        break; 
                     }
                 }
 
