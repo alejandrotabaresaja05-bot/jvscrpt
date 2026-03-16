@@ -1,7 +1,9 @@
+// BLOQUE 9: Variable Global 
 let estudiantes = [];
 
 function iniciarSistema() {
-    let opcion; 
+    // BLOQUE 9: Variable Local 
+    let opcion;
 
     do {
         opcion = prompt("Elige una opción del 1 al 6:\n1. Agregar estudiante\n2. Mostrar estudiantes\n3. Calcular promedio\n4. Buscar letra repetida\n5. Suma recursiva\n6. Salir");
@@ -165,3 +167,21 @@ function sumaRecursiva(n) {
     } else {
         return n + sumaRecursiva(n - 1);
     }
+// BLOQUE 9: Ejemplo de diferencia entre var y let
+function ejemploAmbito() {
+    if (true) {
+        var variableVar = "Soy accesible fuera del bloque 'if' porque var tiene ámbito de función";
+        let variableLet = "Solo soy accesible dentro de este 'if' porque let tiene ámbito de bloque";
+        console.log(variableLet);
+    }
+    console.log(variableVar); // Esto funciona
+    // console.log(variableLet); // Esto daría error porque variableLet no existe aquí fuera
+}
+// BLOQUE 10: Manejo Global de Errores
+try {
+    iniciarSistema();
+} catch(e) {
+    console.log("Error general del sistema: " + e.message);
+} finally {
+    console.log("Sistema finalizado correctamente");
+}
