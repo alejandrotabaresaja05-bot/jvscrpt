@@ -1,0 +1,141 @@
+let estudiantes = [];
+
+function iniciarSistema() {
+    let opcion; // Declaramos la variable vacía
+
+    do {
+        // Pedimos la opción y la guardamos (¡sin let!)
+        opcion = prompt("Elige una opción del 1 al 6:\n1. Agregar estudiante\n2. Mostrar estudiantes\n3. Calcular promedio\n4. Buscar letra repetida\n5. Suma recursiva\n6. Salir");
+
+        switch (opcion) {
+            case "1":
+                // Código que se ejecuta si la variable vale "1"
+                    let idEstudiante = prompt("Ingrese el ID del estudiante:");
+                    let nombre = prompt("Ingrese el nombre del estudiante:");
+                    let edad = prompt("Ingrese la edad del estudiante:");
+                    agregarEstudiante(idEstudiante, nombre, edad);
+                break;
+            case "2":
+                // Código si vale "2"
+                for (let i = 0; i < estudiantes.length; i++) {
+                    console.log(`ID: ${estudiantes[i].id}, Nombre: ${estudiantes[i].nombre}, Edad: ${estudiantes[i].edad}, Notas: ${estudiantes[i].notas.join(", ")}`);
+                }
+                break;
+            case "3":
+                // Código si vale "3"
+                let promedioId = prompt("Ingrese el ID del estudiante para calcular su promedio:");
+                calcularPromedio(parseInt(promedioId));
+                break;
+            case "4":
+                // Código si vale "4"
+                break;
+            case "5":
+                // Código si vale "5"
+                break;
+            case "6":
+                // Código si vale "6"
+                break;
+            default:
+                // Código que se ejecuta si no coincide con ninguno
+                break;
+        }
+    } while (opcion !== "6"); // Si no es un 6, volvemos a mostrar el menú
+}
+function agregarEstudiante(id, nombre, edad) {
+    try {
+        id = parseInt(id);
+        nombre = String(nombre);
+        edad = parseInt(edad);
+        if(nombre ==="") {
+            throw new Error("El nombre no puede estar vacío");
+        }
+        if (edad <= 0) {
+            throw new Error("La edad debe ser un número positivo");
+        }
+        if (isNaN(id)) {
+            throw new Error("El ID debe ser un número válido");
+            
+        }
+        for (let i = 0; i < estudiantes.length; i++) {
+    if (estudiantes[i].id === id) {
+        throw new Error("Ya existe un estudiante con ese ID");
+    }
+    let nuevoEstudiante = {
+    id: id,
+    nombre: nombre,
+    edad: edad,
+    notas: [] 
+};
+estudiantes.push(nuevoEstudiante);
+}
+    } catch (error) {
+        console.error("Error al agregar estudiante:", error.message);
+        return;
+    }
+    finally {
+        console.log("Intento de registro finalizado");
+    }
+}
+function agregarNota(id, nota) {
+    if (nota < 0 || nota > 10) {
+        console.error("La nota debe estar entre 0 y 10");
+        return;
+    }
+    for (let i = 0; i < estudiantes.length; i++) {
+        if (estudiantes[i].id === id) {
+            console.log("Estudiante encontrado, agregando nota...");
+            estudiantes[i].notas.push(nota);
+            console.log("Nota agregada exitosamente");
+            return;
+        }
+}
+    console.error("ERROR: Estudiante no encontrado");
+}
+function calcularPromedio(idEstudiante) {
+    for (let i = 0; i < estudiantes.length; i++) {
+        if (estudiantes[i].id === idEstudiante) {
+            let notasAlumno = estudiantes[i].notas;
+            if (notasAlumno.length === 0) {
+                console.log("El estudiante no tiene notas registradas");
+                return;
+            }
+            let suma = 0;
+            for (let j = 0; j < notasAlumno.length; j++) {
+                suma += notasAlumno[j];
+            }
+            let promedio = suma / notasAlumno.length;
+            if (promedio < 5) {
+                console.log("Estado: Suspende");
+            } else if (promedio > 5 && promedio < 9) {
+                console.log("Estado: Aprobado");
+                } else {
+                    console.log("Estado: Excelente");
+                }
+                console.log(`El promedio del estudiante ${estudiantes[i].nombre} es: ${promedio.toFixed(2)}`);
+            }
+            return;
+        }
+    
+    console.error("ERROR: Estudiante no encontrado");
+}
+function buscarLetrasRepetidas(nombre) {
+    let nombreLimpio = nombre.toLowerCase().replace(/\s+/g, ''); // Quitamos espacios y pasamos a minúsculas
+    let repetidas = [];
+
+    for (let i = 0; i < nombreLimpio.length; i++) {
+        let letra = nombreLimpio[i];
+        // Si la letra aparece en otra posición que no sea la actual, es que está repetida
+        if (nombreLimpio.indexOf(letra) !== nombreLimpio.lastIndexOf(letra)) {
+            if (!repetidas.includes(letra)) {
+                repetidas.push(letra);
+            }
+        }
+    }
+
+    if (repetidas.length > 0) {
+        console.log(`El nombre "${nombre}" tiene estas letras repetidas: ${repetidas.join(", ")}`);
+    } else {
+        console.log(`El nombre "${nombre}" no tiene letras repetidas.`);
+    }
+}    
+
