@@ -27,7 +27,22 @@ function iniciarSistema() {
                 calcularPromedio(parseInt(promedioId));
                 break;
             case "4":
-                // Código si vale "4"
+                 // Código si vale "4"
+                let idBusqueda = prompt("Ingrese el ID del estudiante para buscar letras repetidas:");
+                let encontrado = false;
+
+                // Buscamos al estudiante en la lista
+                for (let i = 0; i < estudiantes.length; i++) {
+                    if (estudiantes[i].id === parseInt(idBusqueda)) {
+                        buscarLetrasRepetidas(estudiantes[i].nombre);
+                        encontrado = true;
+                        break; // Ya lo encontramos, salimos del bucle de búsqueda
+                    }
+                }
+
+                if (!encontrado) {
+                    console.error("No se encontró ningún estudiante con ese ID.");
+                }
                 break;
             case "5":
                 // Código si vale "5"
@@ -46,33 +61,32 @@ function agregarEstudiante(id, nombre, edad) {
         id = parseInt(id);
         nombre = String(nombre);
         edad = parseInt(edad);
-        if(nombre ==="") {
-            throw new Error("El nombre no puede estar vacío");
-        }
-        if (edad <= 0) {
-            throw new Error("La edad debe ser un número positivo");
-        }
-        if (isNaN(id)) {
-            throw new Error("El ID debe ser un número válido");
-            
-        }
+
+        // 1. Validaciones básicas
+        if(nombre === "") throw new Error("El nombre no puede estar vacío");
+        if (edad <= 0) throw new Error("La edad debe ser un número positivo");
+        if (isNaN(id)) throw new Error("El ID debe ser un número válido");
+
+        // 2. Comprobación de ID repetido (EL BUCLE SOLO BUSCA)
         for (let i = 0; i < estudiantes.length; i++) {
-    if (estudiantes[i].id === id) {
-        throw new Error("Ya existe un estudiante con ese ID");
-    }
-    let nuevoEstudiante = {
-    id: id,
-    nombre: nombre,
-    edad: edad,
-    notas: [] 
-};
-estudiantes.push(nuevoEstudiante);
-}
+            if (estudiantes[i].id === id) {
+                throw new Error("Ya existe un estudiante con ese ID");
+            }
+        }
+
+        // 3. REGISTRO (FUERA DEL BUCLE): Si llegamos aquí, es que el ID es único
+        let nuevoEstudiante = {
+            id: id,
+            nombre: nombre,
+            edad: edad,
+            notas: [] 
+        };
+        estudiantes.push(nuevoEstudiante);
+        console.log("¡Piloto registrado con éxito!");
+
     } catch (error) {
         console.error("Error al agregar estudiante:", error.message);
-        return;
-    }
-    finally {
+    } finally {
         console.log("Intento de registro finalizado");
     }
 }
@@ -119,23 +133,28 @@ function calcularPromedio(idEstudiante) {
     console.error("ERROR: Estudiante no encontrado");
 }
 function buscarLetrasRepetidas(nombre) {
-    let nombreLimpio = nombre.toLowerCase().replace(/\s+/g, ''); // Quitamos espacios y pasamos a minúsculas
+    let nombreMinus = nombre.toLowerCase().replace(/\s+/g, ''); // Limpiamos nombre
     let repetidas = [];
 
-    for (let i = 0; i < nombreLimpio.length; i++) {
-        let letra = nombreLimpio[i];
-        // Si la letra aparece en otra posición que no sea la actual, es que está repetida
-        if (nombreLimpio.indexOf(letra) !== nombreLimpio.lastIndexOf(letra)) {
-            if (!repetidas.includes(letra)) {
-                repetidas.push(letra);
+    // BUCLE 1 (El Ingeniero): Elige una letra para investigar
+    for (let i = 0; i < nombreMinus.length; i++) {
+        let letraActual = nombreMinus[i];
+
+        // BUCLE 2 (El Espía): Busca esa misma letra en el RESTO del nombre
+        for (let j = i + 1; j < nombreMinus.length; j++) {
+            if (letraActual === nombreMinus[j]) {
+                // Si la encontramos y no la habíamos guardado ya...
+                if (!repetidas.includes(letraActual)) {
+                    repetidas.push(letraActual);
+                }
             }
         }
     }
 
+    // Informe final
     if (repetidas.length > 0) {
-        console.log(`El nombre "${nombre}" tiene estas letras repetidas: ${repetidas.join(", ")}`);
+        console.log(`Análisis de "${nombre}": Se repiten las letras: ${repetidas.join(", ")}`);
     } else {
-        console.log(`El nombre "${nombre}" no tiene letras repetidas.`);
+        console.log(`Análisis de "${nombre}": No hay vibraciones (letras repetidas).`);
     }
-}    
-
+}
