@@ -16,10 +16,14 @@ function iniciarSistema() {
                     agregarEstudiante(idEstudiante, nombre, edad);
                 break;
             case "2":
-                // Código si vale "2"
-                for (let i = 0; i < estudiantes.length; i++) {
-                    console.log(`ID: ${estudiantes[i].id}, Nombre: ${estudiantes[i].nombre}, Edad: ${estudiantes[i].edad}, Notas: ${estudiantes[i].notas.join(", ")}`);
-                }
+        console.log("=== LISTA COMPLETA DE ESTUDIANTES ===");
+        if (estudiantes.length === 0) {
+            console.log("No hay estudiantes registrados en la parrilla.");
+        } else {
+            for (let i = 0; i < estudiantes.length; i++) {
+                estudiantes[i].mostrarInformacion(); 
+            }
+        }
                 break;
             case "3":
                 // Código si vale "3"
@@ -46,7 +50,9 @@ function iniciarSistema() {
                 break;
             case "5":
                 // Código si vale "5"
-                break;
+                let num = prompt("¿Hasta qué número quieres sumar?");
+                let n = parseInt(num);
+                console.log("La suma recursiva es: " + sumaRecursiva(n));
             case "6":
                 // Código si vale "6"
                 break;
@@ -62,24 +68,25 @@ function agregarEstudiante(id, nombre, edad) {
         nombre = String(nombre);
         edad = parseInt(edad);
 
-        // 1. Validaciones básicas
         if(nombre === "") throw new Error("El nombre no puede estar vacío");
         if (edad <= 0) throw new Error("La edad debe ser un número positivo");
         if (isNaN(id)) throw new Error("El ID debe ser un número válido");
 
-        // 2. Comprobación de ID repetido (EL BUCLE SOLO BUSCA)
         for (let i = 0; i < estudiantes.length; i++) {
             if (estudiantes[i].id === id) {
                 throw new Error("Ya existe un estudiante con ese ID");
             }
         }
 
-        // 3. REGISTRO (FUERA DEL BUCLE): Si llegamos aquí, es que el ID es único
         let nuevoEstudiante = {
             id: id,
             nombre: nombre,
             edad: edad,
             notas: [] 
+            // bloque 7
+            mostrarInformacion: function() {
+                console.log(`ID: ${this.id}, Nombre: ${this.nombre}, Edad: ${this.edad}, Notas: ${this.notas.length > 0 ? this.notas.join(", ") : "Sin registros"}`);
+        }
         };
         estudiantes.push(nuevoEstudiante);
         console.log("¡Piloto registrado con éxito!");
@@ -136,14 +143,11 @@ function buscarLetrasRepetidas(nombre) {
     let nombreMinus = nombre.toLowerCase().replace(/\s+/g, ''); // Limpiamos nombre
     let repetidas = [];
 
-    // BUCLE 1 (El Ingeniero): Elige una letra para investigar
     for (let i = 0; i < nombreMinus.length; i++) {
         let letraActual = nombreMinus[i];
 
-        // BUCLE 2 (El Espía): Busca esa misma letra en el RESTO del nombre
         for (let j = i + 1; j < nombreMinus.length; j++) {
             if (letraActual === nombreMinus[j]) {
-                // Si la encontramos y no la habíamos guardado ya...
                 if (!repetidas.includes(letraActual)) {
                     repetidas.push(letraActual);
                 }
@@ -151,10 +155,15 @@ function buscarLetrasRepetidas(nombre) {
         }
     }
 
-    // Informe final
     if (repetidas.length > 0) {
         console.log(`Análisis de "${nombre}": Se repiten las letras: ${repetidas.join(", ")}`);
     } else {
         console.log(`Análisis de "${nombre}": No hay vibraciones (letras repetidas).`);
     }
 }
+function sumaRecursiva(n) {
+    if (n <= 0) {
+        return 0;
+    } else {
+        return n + sumaRecursiva(n - 1);
+    }
