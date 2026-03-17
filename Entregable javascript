@@ -52,7 +52,7 @@ function iniciarSistema() {
                 // Código si vale "5"
                 let num = prompt("¿Hasta qué número quieres sumar?");
                 let n = parseInt(num);
-                console.log("La suma recursiva es: " + sumaRecursiva(n));
+                console.log("La suma recursiva es: " + sumaHastaN(n));
             case "6":
                 // Código si vale "6"
                 break;
@@ -139,33 +139,54 @@ function calcularPromedio(idEstudiante) {
     
     console.error("ERROR: Estudiante no encontrado");
 }
-function buscarLetrasRepetidas(nombre) {
-    let nombreMinus = nombre.toLowerCase().replace(/\s+/g, ''); // Limpiamos nombre
-    let repetidas = [];
+function primeraLetraRepetida(nombre) {
+    if (typeof nombre !== 'string') {
+        console.log("El valor introducido no es un texto válido.");
+        return;
+    }
 
-    for (let i = 0; i < nombreMinus.length; i++) {
-        let letraActual = nombreMinus[i];
-
-        for (let j = i + 1; j < nombreMinus.length; j++) {
-            if (letraActual === nombreMinus[j]) {
-                if (!repetidas.includes(letraActual)) {
-                    repetidas.push(letraActual);
-                }
+    let nombreLimpio = nombre.toLowerCase().replace(/\s+/g, '');
+    
+    for (let i = 0; i < nombreLimpio.length; i++) {
+        let letraActual = nombreLimpio[i];
+        for (let j = i + 1; j < nombreLimpio.length; j++) {
+            if (letraActual === nombreLimpio[j]) {
+                console.log(`La primera letra repetida es: ${letraActual}`);
+                return letraActual; // Con return salimos inmediatamente al encontrar la primera
             }
         }
     }
+    console.log(`El nombre "${nombre}" no tiene letras repetidas.`);
+}
+function sumaHastaN(n) {
+    if (isNaN(n) || n < 1) {
+        console.log("El número debe ser un entero positivo mayor que 0.");
+        return 0;
+    }
 
-    if (repetidas.length > 0) {
-        console.log(`Análisis de "${nombre}": Se repiten las letras: ${repetidas.join(", ")}`);
+    if (n === 1) {
+        return 1;
     } else {
-        console.log(`Análisis de "${nombre}": No hay vibraciones (letras repetidas).`);
+        return n + sumaHastaN(n - 1);
     }
 }
-function sumaRecursiva(n) {
-    if (n <= 0) {
-        return 0;
+// BLOQUE 8: Manipulación Avanzada de Arrays
+function mostrarEstudiantesDestacados() {
+    let destacados = estudiantes.filter(estudiante => {
+        if (estudiante.notas.length === 0) return false;
+        
+        let suma = 0;
+        for (let i = 0; i < estudiante.notas.length; i++) {
+            suma += estudiante.notas[i];
+        }
+        let promedio = suma / estudiante.notas.length;
+        return promedio >= 9;
+    });
+
+    if (destacados.length > 0) {
+        console.log("Estudiantes destacados: " + destacados.map(estudiante => estudiante.nombre).join(", "));
     } else {
-        return n + sumaRecursiva(n - 1);
+        console.log("No hay estudiantes destacados.");
     }
 }
 // BLOQUE 9: Ejemplo de diferencia entre var y let
